@@ -93,6 +93,16 @@
               />
             </div>
             <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Sumber</label>
+              <input
+                v-model="form.source"
+                type="text"
+                maxlength="200"
+                placeholder="cth: Bloomberg, Internal"
+                class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+            </div>
+            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">URL Gambar</label>
               <input
                 v-model="form.image_url"
@@ -182,7 +192,8 @@ const form = reactive({
   excerpt: '',
   content: '',
   image_url: '',
-  author: '',
+  author: 'Tim Riset Sekuritas',
+  source: '',
   is_published: true,
   published_at: ''
 })
@@ -201,6 +212,7 @@ async function handleSubmit() {
     if (form.excerpt) payload.excerpt = form.excerpt
     if (form.image_url) payload.image_url = form.image_url
     if (form.author) payload.author = form.author
+    if (form.source) payload.source = form.source
     if (form.published_at) payload.published_at = form.published_at
 
     await $fetch(`${config.public.apiBase}/articles`, {

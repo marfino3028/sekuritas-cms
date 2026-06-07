@@ -96,6 +96,16 @@
               />
             </div>
             <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Sumber</label>
+              <input
+                v-model="form.source"
+                type="text"
+                maxlength="200"
+                placeholder="cth: Bloomberg, Internal"
+                class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+            </div>
+            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">URL Gambar</label>
               <input
                 v-model="form.image_url"
@@ -190,6 +200,7 @@ const form = reactive({
   content: '',
   image_url: '',
   author: '',
+  source: '',
   is_published: true,
   published_at: ''
 })
@@ -217,6 +228,7 @@ async function fetchArticle() {
       content: a.content ?? '',
       image_url: a.image_url ?? '',
       author: a.author ?? '',
+      source: a.source ?? '',
       is_published: !!a.is_published,
       published_at: toDateTimeLocal(a.published_at)
     })
@@ -229,6 +241,7 @@ async function fetchArticle() {
       content: 'Pasar saham Indonesia diperkirakan menunjukkan pertumbuhan yang sehat...',
       image_url: '',
       author: 'Tim Riset Sekuritas',
+      source: 'Internal',
       is_published: true,
       published_at: toDateTimeLocal('2026-01-15T09:00:00')
     })
@@ -250,6 +263,7 @@ async function handleSubmit() {
       content: form.content,
       image_url: form.image_url || null,
       author: form.author || null,
+      source: form.source || null,
       is_published: form.is_published,
       published_at: form.published_at || null
     }
