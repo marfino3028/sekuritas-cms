@@ -118,6 +118,9 @@
                 <span v-if="product.is_syariah" class="ml-1 inline-block px-1.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700">
                   Syariah
                 </span>
+                <span v-if="product.risk_level" class="ml-1 inline-block px-1.5 py-0.5 text-xs font-medium rounded-full" :class="riskClass(product.risk_level)">
+                  {{ riskLabel(product.risk_level) }}
+                </span>
               </td>
               <td class="px-5 py-3.5 font-medium text-gray-900 whitespace-nowrap">
                 {{ formatNAV(product.nav_per_unit) }}
@@ -257,6 +260,21 @@ function fundTypeClass(type: string) {
     campuran: 'bg-purple-100 text-purple-700', pasar_uang: 'bg-green-100 text-green-700', index: 'bg-orange-100 text-orange-700'
   }
   return map[type] || 'bg-gray-100 text-gray-700'
+}
+
+function riskLabel(level: number) {
+  const map: Record<number, string> = {
+    1: 'Risiko Rendah', 2: 'Risiko Menengah-Rendah', 3: 'Risiko Menengah', 4: 'Risiko Menengah-Tinggi', 5: 'Risiko Tinggi'
+  }
+  return map[level] || `Risiko ${level}`
+}
+
+function riskClass(level: number) {
+  const map: Record<number, string> = {
+    1: 'bg-green-100 text-green-700', 2: 'bg-lime-100 text-lime-700',
+    3: 'bg-yellow-100 text-yellow-700', 4: 'bg-orange-100 text-orange-700', 5: 'bg-red-100 text-red-700'
+  }
+  return map[level] || 'bg-gray-100 text-gray-700'
 }
 
 function formatNAV(value: number) {

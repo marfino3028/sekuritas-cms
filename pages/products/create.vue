@@ -57,6 +57,20 @@
               />
             </div>
             <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Profil Risiko <span class="text-red-500">*</span></label>
+              <select
+                v-model.number="form.risk_level"
+                required
+                class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              >
+                <option :value="1">Rendah</option>
+                <option :value="2">Menengah-Rendah</option>
+                <option :value="3">Menengah</option>
+                <option :value="4">Menengah-Tinggi</option>
+                <option :value="5">Tinggi</option>
+              </select>
+            </div>
+            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">Manajer Investasi <span class="text-red-500">*</span></label>
               <select
                 v-model="form.investment_manager_id"
@@ -234,6 +248,7 @@ const form = reactive({
   investment_manager_id: '',
   custodian_bank: '',
   fund_type: '',
+  risk_level: 3,
   nav_per_unit: null as number | null,
   min_subscription: 10000,
   management_fee: null as number | null,
