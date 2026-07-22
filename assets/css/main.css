@@ -52,11 +52,11 @@
 
   .btn-primary {
     @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed;
-    background-color: #1E56C9;
+    background-color: #4F46E5;
   }
 
   .btn-primary:hover:not(:disabled) {
-    background-color: #164AAE;
+    background-color: #4338CA;
   }
 
   .btn-secondary {

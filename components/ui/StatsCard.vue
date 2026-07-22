@@ -68,9 +68,9 @@ const colorConfig = {
     orb: 'radial-gradient(circle, #93c5fd, transparent)',
   },
   teal: {
-    gradient: 'linear-gradient(90deg, #1E56C9, #0B2A5B)',
+    gradient: 'linear-gradient(90deg, #4F46E5, #312E81)',
     iconBg: '#f0fdf4',
-    iconColor: '#164AAE',
+    iconColor: '#4338CA',
     orb: 'radial-gradient(circle, #99f6e4, transparent)',
   },
   yellow: {

@@ -12,41 +12,43 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Brand Victoria Sekuritas — navy tepercaya + emas premium
+        // Design system "Indigo Premium" — selaras dengan web depan & mobile
+        // (indigo primary + violet accent). Nama token dipertahankan agar
+        // seluruh class yang ada ikut berubah otomatis.
         sidebar: {
-          DEFAULT: '#0B2A5B',
-          hover: '#123A72',
-          active: '#0A1F44',
-          border: '#123A72'
+          DEFAULT: '#312E81', // deep indigo
+          hover: '#3730A3',
+          active: '#1E1B4B',
+          border: '#3730A3'
         },
         accent: {
-          DEFAULT: '#1E56C9',
-          light: '#4C7EE8',
-          dark: '#164AAE',
-          50: '#eaf0fc',
-          100: '#cddbf7',
-          500: '#1E56C9',
-          600: '#164AAE',
-          700: '#0F3A8C'
+          DEFAULT: '#4F46E5', // indigo
+          light: '#818CF8',
+          dark: '#4338CA',
+          50: '#EEF2FF',
+          100: '#E0E7FF',
+          500: '#4F46E5',
+          600: '#4338CA',
+          700: '#3730A3'
         },
         gold: {
-          DEFAULT: '#F5B301',
-          light: '#FFCB3D',
-          dark: '#D69A00'
+          DEFAULT: '#8B5CF6', // aksen premium = violet (bukan gold)
+          light: '#A78BFA',
+          dark: '#7C3AED'
         },
-        // Override palet 'teal' bawaan → biru Victoria, agar seluruh class teal-*
+        // Override palet 'teal' bawaan → indigo, agar seluruh class teal-*
         // yang sudah dipakai di halaman otomatis mengadopsi warna brand.
         teal: {
-          50:  '#eaf0fc',
-          100: '#cddbf7',
-          200: '#a9c2f0',
-          300: '#7ea3e6',
-          400: '#4C7EE8',
-          500: '#1E56C9',
-          600: '#164AAE',
-          700: '#0F3A8C',
-          800: '#0B2A5B',
-          900: '#0A1F44'
+          50:  '#EEF2FF',
+          100: '#E0E7FF',
+          200: '#C7D2FE',
+          300: '#A5B4FC',
+          400: '#818CF8',
+          500: '#4F46E5',
+          600: '#4338CA',
+          700: '#3730A3',
+          800: '#312E81',
+          900: '#1E1B4B'
         }
       },
       fontFamily: {
