@@ -220,6 +220,48 @@
           </div>
         </div>
 
+        <!-- Hasil eKYC otomatis -->
+        <div v-if="kyc.ekyc" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-gray-900">Verifikasi eKYC Otomatis</h3>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full"
+                  :class="{
+                    'bg-green-100 text-green-700': kyc.ekyc.result?.decision === 'approved',
+                    'bg-amber-100 text-amber-700': kyc.ekyc.result?.decision === 'review',
+                    'bg-red-100 text-red-700': kyc.ekyc.result?.decision === 'rejected'
+                  }">
+              {{ ekycDecisionLabel }}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 text-center mb-3">
+            <div class="bg-gray-50 rounded-lg py-2">
+              <p class="text-[10px] text-gray-400 uppercase tracking-wide">Skor</p>
+              <p class="font-bold text-gray-800">{{ kyc.ekyc.result?.final_score ?? kyc.ekyc.score ?? '—' }}</p>
+            </div>
+            <div class="bg-gray-50 rounded-lg py-2">
+              <p class="text-[10px] text-gray-400 uppercase tracking-wide">OCR</p>
+              <p class="font-bold text-gray-800">{{ kyc.ekyc.result?.ocr_score ?? '—' }}</p>
+            </div>
+            <div class="bg-gray-50 rounded-lg py-2">
+              <p class="text-[10px] text-gray-400 uppercase tracking-wide">Liveness</p>
+              <p class="font-bold text-gray-800">{{ kyc.ekyc.result?.liveness_score ?? '—' }}</p>
+            </div>
+            <div class="bg-gray-50 rounded-lg py-2">
+              <p class="text-[10px] text-gray-400 uppercase tracking-wide">Face</p>
+              <p class="font-bold text-gray-800">{{ kyc.ekyc.result?.face_match_score ?? '—' }}</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 text-xs">
+            <span class="px-2 py-0.5 rounded bg-gray-100 text-gray-500">Provider: {{ kyc.ekyc.provider }}</span>
+            <span v-if="kyc.ekyc.signature" class="px-2 py-0.5 rounded bg-blue-50 text-blue-600">Tanda tangan: {{ kyc.ekyc.signature.provider }}</span>
+          </div>
+          <div v-if="kyc.ekyc.result?.flags?.length" class="mt-2 text-xs text-red-600">
+            ⚠ Flag: {{ kyc.ekyc.result.flags.join(', ') }}
+          </div>
+        </div>
+
         <!-- SID Status -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <h3 class="font-semibold text-gray-900 mb-3">SID & IFUA</h3>
@@ -347,6 +389,12 @@ const lightboxImage = ref<string | null>(null)
 const showApproveModal = ref(false)
 const showRejectModal = ref(false)
 const rejectReason = ref('')
+
+const ekycDecisionLabel = computed(() => ({
+  approved: 'Terverifikasi',
+  review: 'Perlu Review',
+  rejected: 'Ditolak',
+}[kyc.value?.ekyc?.result?.decision as string] || 'Belum ada'))
 const generatingSid = ref(false)
 const generatedSid = ref('')
 const generatedIfua = ref('')
