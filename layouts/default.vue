@@ -12,7 +12,7 @@
       <div class="flex items-center h-16 px-4 flex-shrink-0" style="border-bottom: 1px solid rgba(255,255,255,0.07)">
         <div class="flex items-center overflow-hidden" :class="sidebarOpen ? 'space-x-3' : 'justify-center w-full'">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-               style="background: linear-gradient(135deg, #4F46E5, #312E81)">
+               style="background: linear-gradient(135deg, #A40001, #7D0001)">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -21,7 +21,7 @@
           <transition name="fade">
             <div v-if="sidebarOpen">
               <p class="text-white font-bold text-sm leading-none">Victoria Sekuritas</p>
-              <p class="text-xs leading-none mt-0.5" style="color: #A78BFA">Admin Panel</p>
+              <p class="text-xs leading-none mt-0.5" style="color: #D59997">Admin Panel</p>
             </div>
           </transition>
         </div>
@@ -42,7 +42,7 @@
                 : 'text-slate-400 hover:text-white hover:bg-white/5'
             ]"
             :style="isActive(item.path)
-              ? 'background: rgba(79,70,229,0.12); border-left: 2px solid #4F46E5;'
+              ? 'background: rgba(164,0,1,0.12); border-left: 2px solid #A40001;'
               : 'border-left: 2px solid transparent;'"
           >
             <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
@@ -66,7 +66,7 @@
         <div class="flex items-center" :class="sidebarOpen ? 'space-x-3' : 'justify-center'">
           <div
             class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-            style="background: linear-gradient(135deg, #4F46E5, #312E81)"
+            style="background: linear-gradient(135deg, #A40001, #7D0001)"
           >
             {{ authStore.userInitials }}
           </div>

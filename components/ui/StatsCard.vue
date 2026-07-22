@@ -68,9 +68,9 @@ const colorConfig = {
     orb: 'radial-gradient(circle, #93c5fd, transparent)',
   },
   teal: {
-    gradient: 'linear-gradient(90deg, #4F46E5, #312E81)',
+    gradient: 'linear-gradient(90deg, #A40001, #7D0001)',
     iconBg: '#f0fdf4',
-    iconColor: '#4338CA',
+    iconColor: '#8F0001',
     orb: 'radial-gradient(circle, #99f6e4, transparent)',
   },
   yellow: {
@@ -80,9 +80,9 @@ const colorConfig = {
     orb: 'radial-gradient(circle, #fde68a, transparent)',
   },
   purple: {
-    gradient: 'linear-gradient(90deg, #8b5cf6, #a78bfa)',
+    gradient: 'linear-gradient(90deg, #C67177, #D59997)',
     iconBg: '#f5f3ff',
-    iconColor: '#7c3aed',
+    iconColor: '#A0474E',
     orb: 'radial-gradient(circle, #c4b5fd, transparent)',
   },
   red: {
