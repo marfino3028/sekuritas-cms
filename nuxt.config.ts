@@ -8,15 +8,16 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Sekuritas CMS - Admin Panel',
+      title: 'Victoria Sekuritas — CMS Admin',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Sekuritas Demo - CMS Admin Panel for Mutual Fund Platform' }
+        { name: 'description', content: 'Victoria Sekuritas — CMS Admin Panel platform reksa dana' }
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap' }
       ]
     }
   },

@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen relative overflow-hidden flex items-center justify-center px-4"
-       style="background: linear-gradient(160deg, #0f172a 0%, #134e4a 45%, #0c1a30 100%)">
+       style="background: linear-gradient(160deg, #0f172a 0%, #0B2A5B 45%, #0c1a30 100%)">
     <!-- Decorative orbs -->
     <div class="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full pointer-events-none"
-         style="background: radial-gradient(circle, rgba(20,184,166,0.22) 0%, transparent 65%)"></div>
+         style="background: radial-gradient(circle, rgba(30,86,201,0.22) 0%, transparent 65%)"></div>
     <div class="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none"
          style="background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 65%)"></div>
 
@@ -11,14 +11,14 @@
       <!-- Logo section -->
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg"
-             style="background: linear-gradient(135deg, #14b8a6, #0ea5e9)">
+             style="background: linear-gradient(135deg, #1E56C9, #0B2A5B)">
           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </div>
-        <h1 class="text-2xl font-bold text-white tracking-tight">Sekuritas CMS</h1>
-        <p class="text-sm mt-1" style="color: #5eead4">Admin Panel — Back Office</p>
+        <h1 class="text-2xl font-bold text-white tracking-tight">Victoria Sekuritas — CMS</h1>
+        <p class="text-sm mt-1" style="color: #FFCB3D">Admin Panel — Back Office</p>
       </div>
 
       <!-- Login card -->
@@ -58,7 +58,7 @@
                 placeholder="admin@sekuritas.co.id"
                 class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:bg-white transition-all"
                 :class="{ 'border-red-300 bg-red-50 focus:ring-red-200': authStore.error }"
-                style="--tw-ring-color: rgba(20,184,166,0.25)"
+                style="--tw-ring-color: rgba(30,86,201,0.25)"
                 @focus="authStore.error = null"
               />
             </div>
@@ -106,7 +106,7 @@
             type="submit"
             :disabled="authStore.loading"
             class="w-full py-3 px-4 text-white font-semibold rounded-xl transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
-            style="background: linear-gradient(135deg, #14b8a6, #0ea5e9)"
+            style="background: linear-gradient(135deg, #1E56C9, #0B2A5B)"
           >
             <span v-if="!authStore.loading" class="flex items-center justify-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +132,7 @@
       </div>
 
       <p class="text-center text-xs mt-6" style="color: #475569">
-        &copy; {{ new Date().getFullYear() }} Sekuritas Demo — CMS v1.0
+        &copy; {{ new Date().getFullYear() }} Victoria Sekuritas — CMS v1.0
       </p>
     </div>
   </div>
