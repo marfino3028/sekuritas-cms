@@ -217,6 +217,41 @@
                 </div>
               </div>
             </div>
+            <!-- NPWP & Buku Tabungan -->
+            <div v-if="kyc.npwp_photo">
+              <p class="text-xs text-gray-500 mb-2 font-medium">Foto NPWP</p>
+              <img :src="kyc.npwp_photo" alt="NPWP" class="w-full h-36 object-cover rounded-lg cursor-pointer" @click="openImage(kyc.npwp_photo)" />
+            </div>
+            <div v-if="kyc.bank_book_photo">
+              <p class="text-xs text-gray-500 mb-2 font-medium">Buku Tabungan / Rekening</p>
+              <img :src="kyc.bank_book_photo" alt="Buku Tabungan" class="w-full h-36 object-cover rounded-lg cursor-pointer" @click="openImage(kyc.bank_book_photo)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Pekerjaan & Informasi Tambahan -->
+        <div v-if="kyc.employment || kyc.additional_info" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+          <h3 class="font-semibold text-gray-900 mb-3">Data Pekerjaan &amp; Informasi Tambahan</h3>
+          <div v-if="kyc.employment" class="text-sm space-y-1.5 mb-3">
+            <p class="text-xs font-semibold text-gray-500 uppercase">Pekerjaan</p>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-gray-700">
+              <span class="text-gray-400">Perusahaan</span><span>{{ kyc.employment.company_name || '-' }}</span>
+              <span class="text-gray-400">Jabatan</span><span>{{ kyc.employment.position || '-' }}</span>
+              <span class="text-gray-400">Bidang</span><span>{{ kyc.employment.business_field || '-' }}</span>
+              <span class="text-gray-400">Lama kerja</span><span>{{ kyc.employment.work_years || 0 }}th {{ kyc.employment.work_months || 0 }}bln</span>
+              <span class="text-gray-400">Bertindak sbg</span><span>{{ kyc.employment.acting_as }}</span>
+              <span class="text-gray-400">Alamat kantor</span><span>{{ kyc.employment.office?.address || '-' }}</span>
+            </div>
+          </div>
+          <div v-if="kyc.additional_info" class="text-sm space-y-1.5 pt-2 border-t border-gray-50">
+            <p class="text-xs font-semibold text-gray-500 uppercase">Investasi</p>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-gray-700">
+              <span class="text-gray-400">Tujuan</span><span>{{ kyc.additional_info.investment_objective || '-' }}</span>
+              <span class="text-gray-400">Pengalaman</span><span>{{ kyc.additional_info.investment_experience || '-' }}</span>
+              <span class="text-gray-400">Tahu dari</span><span>{{ kyc.additional_info.know_from || '-' }}</span>
+              <span class="text-gray-400">FATCA (WNA AS)</span><span>{{ kyc.additional_info.fatca?.[0] ? 'Ya' : 'Tidak' }}</span>
+              <span class="text-gray-400">Pajak negara lain</span><span>{{ kyc.additional_info.tax_other ? 'Ya' : 'Tidak' }}</span>
+            </div>
           </div>
         </div>
 
