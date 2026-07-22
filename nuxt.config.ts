@@ -27,7 +27,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000/api/cms'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000/api/cms',
+      // Base URL web depan (untuk menyusun link promo/referral). Kosongkan → path relatif.
+      frontendBase: process.env.NUXT_PUBLIC_FRONTEND_BASE || 'http://localhost:3000'
     }
   },
 
