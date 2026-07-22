@@ -11,12 +11,8 @@
       <!-- Logo -->
       <div class="flex items-center h-16 px-4 flex-shrink-0" style="border-bottom: 1px solid rgba(255,255,255,0.07)">
         <div class="flex items-center overflow-hidden" :class="sidebarOpen ? 'space-x-3' : 'justify-center w-full'">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-               style="background: linear-gradient(135deg, #A40001, #7D0001)">
-            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-white">
+            <img src="/logo.png" alt="Victoria Sekuritas" class="w-6 h-6 object-contain" />
           </div>
           <transition name="fade">
             <div v-if="sidebarOpen">

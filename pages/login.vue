@@ -10,12 +10,8 @@
     <div class="relative z-10 w-full max-w-md">
       <!-- Logo section -->
       <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg"
-             style="background: linear-gradient(135deg, #A40001, #7D0001)">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg bg-white">
+          <img src="/logo.png" alt="Victoria Sekuritas" class="w-11 h-11 object-contain" />
         </div>
         <h1 class="text-2xl font-bold text-white tracking-tight">Victoria Sekuritas — CMS</h1>
         <p class="text-sm mt-1" style="color: #D59997">Admin Panel — Back Office</p>
