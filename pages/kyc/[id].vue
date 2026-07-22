@@ -226,6 +226,16 @@
               <p class="text-xs text-gray-500 mb-2 font-medium">Buku Tabungan / Rekening</p>
               <img :src="kyc.bank_book_photo" alt="Buku Tabungan" class="w-full h-36 object-cover rounded-lg cursor-pointer" @click="openImage(kyc.bank_book_photo)" />
             </div>
+            <div v-if="kyc.signature_photo || kyc.paraf_photo" class="grid grid-cols-2 gap-3">
+              <div v-if="kyc.signature_photo">
+                <p class="text-xs text-gray-500 mb-2 font-medium">Tanda Tangan</p>
+                <img :src="kyc.signature_photo" alt="Tanda Tangan" class="w-full h-24 object-contain bg-white border rounded-lg cursor-pointer" @click="openImage(kyc.signature_photo)" />
+              </div>
+              <div v-if="kyc.paraf_photo">
+                <p class="text-xs text-gray-500 mb-2 font-medium">Paraf</p>
+                <img :src="kyc.paraf_photo" alt="Paraf" class="w-full h-24 object-contain bg-white border rounded-lg cursor-pointer" @click="openImage(kyc.paraf_photo)" />
+              </div>
+            </div>
           </div>
         </div>
 
