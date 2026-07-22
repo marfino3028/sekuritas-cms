@@ -49,6 +49,10 @@
             </td>
             <td class="px-4 py-3 text-right whitespace-nowrap">
               <button class="text-xs text-accent hover:underline" @click="openLeaderboard(e)">Leaderboard</button>
+              <label class="text-xs text-gray-500 hover:underline ml-3 cursor-pointer">
+                {{ bannerUploading === e.id ? '…' : 'Banner' }}
+                <input type="file" accept="image/*" class="hidden" @change="uploadBanner(e, $event)" />
+              </label>
               <button class="text-xs text-gray-500 hover:underline ml-3" @click="openEdit(e)">Edit</button>
               <button class="text-xs text-red-500 hover:underline ml-3" @click="remove(e)">Hapus</button>
             </td>
@@ -291,6 +295,26 @@ async function exportCsv() {
     a.click()
     URL.revokeObjectURL(url)
   } catch { /* ignore */ } finally { exporting.value = false }
+}
+
+const bannerUploading = ref<number | null>(null)
+async function uploadBanner(e: any, ev: Event) {
+  const file = (ev.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  bannerUploading.value = e.id
+  try {
+    const fd = new FormData()
+    fd.append('banner', file)
+    await $fetch(`${config.public.apiBase}/events/${e.id}/banner`, {
+      method: 'POST', headers: headers.value, body: fd,
+    })
+    await fetchEvents()
+  } catch (err: any) {
+    alert(err?.data?.message || 'Gagal mengunggah banner.')
+  } finally {
+    bannerUploading.value = null
+    ;(ev.target as HTMLInputElement).value = ''
+  }
 }
 
 function copyLink(code: string) {
