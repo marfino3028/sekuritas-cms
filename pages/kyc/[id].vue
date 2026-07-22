@@ -292,9 +292,22 @@
           <div v-else>
             <div class="flex items-center space-x-2 text-gray-400">
               <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-              <p class="text-sm">SID belum digenerate</p>
+              <p class="text-sm">SID belum diterbitkan</p>
             </div>
-            <p class="text-xs text-gray-400 mt-1">SID akan digenerate otomatis setelah KYC diapprove</p>
+
+            <!-- Tombol terbitkan SID (langkah 2) — muncul setelah KYC approved -->
+            <template v-if="kyc.status === 'approved'">
+              <button
+                @click="issueSid"
+                :disabled="issuingSid"
+                class="mt-3 w-full py-2.5 px-4 text-white font-semibold rounded-lg text-sm bg-accent hover:bg-accent-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+                {{ issuingSid ? 'Mengirim…' : 'Kirim ke S-INVEST' }}
+              </button>
+              <p class="text-xs text-gray-400 mt-1.5">Menerbitkan SID &amp; IFUA nasabah ke sistem S-INVEST (KSEI).</p>
+            </template>
+            <p v-else class="text-xs text-gray-400 mt-1">SID dapat diterbitkan setelah KYC disetujui.</p>
           </div>
         </div>
 
@@ -346,7 +359,7 @@
     <ConfirmModal
       v-if="showApproveModal"
       title="Approve KYC"
-      :message="`Anda akan mengapprove KYC dari ${kyc?.name}. SID dan IFUA akan digenerate secara otomatis.`"
+      :message="`Anda akan menyetujui KYC dari ${kyc?.name}. Setelah itu, terbitkan SID lewat tombol 'Kirim ke S-INVEST'.`"
       confirm-label="Ya, Approve"
       confirm-variant="success"
       :loading="actionLoading"
@@ -435,29 +448,35 @@ function riskProfileDesc(profile: string) {
 async function confirmApprove() {
   actionLoading.value = true
   try {
-    const response = await $fetch<any>(`${config.public.apiBase}/kyc/${route.params.id}/approve`, {
+    await $fetch(`${config.public.apiBase}/kyc/${route.params.id}/approve`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${authStore.token}` }
+    })
+  } catch { /* demo/offline: tetap tandai approved */ }
+  finally {
+    kyc.value.status = 'approved'
+    showApproveModal.value = false
+    actionLoading.value = false
+  }
+}
+
+// LANGKAH 2 — terbitkan SID ke S-INVEST (dipicu manual oleh ops)
+const issuingSid = ref(false)
+async function issueSid() {
+  issuingSid.value = true
+  generatingSid.value = true
+  try {
+    const res = await $fetch<any>(`${config.public.apiBase}/kyc/${route.params.id}/issue-sid`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
-    kyc.value.status = 'approved'
-    showApproveModal.value = false
-    generatingSid.value = true
-
-    // Simulate SID generation or use response
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    generatingSid.value = false
-    generatedSid.value = response.sid || generateSidMock()
-    generatedIfua.value = response.ifua || generateIfuaMock()
-  } catch {
-    showApproveModal.value = false
-    kyc.value.status = 'approved'
-    generatingSid.value = true
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    generatingSid.value = false
-    generatedSid.value = generateSidMock()
-    generatedIfua.value = generateIfuaMock()
+    generatedSid.value = res?.data?.sid_number || generateSidMock()
+    generatedIfua.value = res?.data?.ifua_number || generateIfuaMock()
+  } catch (e: any) {
+    alert(e?.data?.message || 'Gagal menerbitkan SID.')
   } finally {
-    actionLoading.value = false
+    generatingSid.value = false
+    issuingSid.value = false
   }
 }
 
