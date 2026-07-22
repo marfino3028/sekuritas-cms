@@ -49,6 +49,7 @@
             </td>
             <td class="px-4 py-3 text-right whitespace-nowrap">
               <button class="text-xs text-accent hover:underline" @click="openLeaderboard(e)">Leaderboard</button>
+              <button class="text-xs text-gray-500 hover:underline ml-3" @click="openEdit(e)">Edit</button>
               <button class="text-xs text-red-500 hover:underline ml-3" @click="remove(e)">Hapus</button>
             </td>
           </tr>
@@ -98,7 +99,7 @@
     <!-- Create panel -->
     <div v-if="showCreate" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" @click.self="showCreate = false">
       <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Tambah Event</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-4">{{ editingId ? 'Edit Event' : 'Tambah Event' }}</h3>
         <p v-if="formError" class="mb-3 p-2.5 bg-red-50 text-red-600 text-sm rounded-lg">{{ formError }}</p>
         <div class="space-y-3">
           <div>
@@ -156,7 +157,7 @@
         </div>
         <div class="flex justify-end gap-2 mt-5">
           <button class="btn-secondary" @click="showCreate = false">Batal</button>
-          <button class="btn-primary" :disabled="saving" @click="save">{{ saving ? 'Menyimpan…' : 'Simpan Event' }}</button>
+          <button class="btn-primary" :disabled="saving" @click="save">{{ saving ? 'Menyimpan…' : (editingId ? 'Simpan Perubahan' : 'Simpan Event') }}</button>
         </div>
       </div>
     </div>
@@ -176,6 +177,16 @@ const copied = ref('')
 const showCreate = ref(false)
 const saving = ref(false)
 const formError = ref('')
+const editingId = ref<number | null>(null)
+
+// ISO/berbagai format -> value input datetime-local (YYYY-MM-DDTHH:mm)
+function toLocalInput(v: string | null): string {
+  if (!v) return ''
+  const d = new Date(v)
+  if (isNaN(d.getTime())) return ''
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
+}
 
 const blankForm = () => ({
   name: '', code: '', event_type: 'webinar', investment_manager: '', description: '',
@@ -193,7 +204,25 @@ async function fetchEvents() {
 }
 onMounted(fetchEvents)
 
-function openCreate() { form.value = blankForm(); formError.value = ''; showCreate.value = true }
+function openCreate() { editingId.value = null; form.value = blankForm(); formError.value = ''; showCreate.value = true }
+
+async function openEdit(e: any) {
+  editingId.value = e.id
+  formError.value = ''
+  showCreate.value = true
+  form.value = blankForm()
+  try {
+    const data = await $fetch<any>(`${config.public.apiBase}/events/${e.id}`, { headers: headers.value })
+    const d = data.data ?? data
+    form.value = {
+      name: d.name ?? '', code: d.code ?? '', event_type: d.event_type ?? 'webinar',
+      investment_manager: d.investment_manager ?? '', description: d.description ?? '',
+      start_at: toLocalInput(d.start_at), end_at: toLocalInput(d.end_at),
+      reward_quota: d.reward_quota ?? null, max_participants: d.max_participants ?? null,
+      reward_description: d.reward_description ?? '', is_active: !!d.is_active,
+    }
+  } catch { formError.value = 'Gagal memuat data event.' }
+}
 
 async function save() {
   formError.value = ''
@@ -202,7 +231,11 @@ async function save() {
     const payload: any = { ...form.value }
     if (payload.code) payload.code = payload.code.toUpperCase()
     Object.keys(payload).forEach((k) => (payload[k] === '' || payload[k] === null) && delete payload[k])
-    await $fetch(`${config.public.apiBase}/events`, { method: 'POST', headers: headers.value, body: payload })
+    if (editingId.value) {
+      await $fetch(`${config.public.apiBase}/events/${editingId.value}`, { method: 'PUT', headers: headers.value, body: payload })
+    } else {
+      await $fetch(`${config.public.apiBase}/events`, { method: 'POST', headers: headers.value, body: payload })
+    }
     showCreate.value = false
     await fetchEvents()
   } catch (e: any) {
