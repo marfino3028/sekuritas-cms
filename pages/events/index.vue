@@ -47,12 +47,52 @@
                 {{ e.is_active ? 'Aktif' : 'Nonaktif' }}
               </button>
             </td>
-            <td class="px-4 py-3 text-right">
-              <button class="text-xs text-red-500 hover:underline" @click="remove(e)">Hapus</button>
+            <td class="px-4 py-3 text-right whitespace-nowrap">
+              <button class="text-xs text-accent hover:underline" @click="openLeaderboard(e)">Leaderboard</button>
+              <button class="text-xs text-red-500 hover:underline ml-3" @click="remove(e)">Hapus</button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Leaderboard modal -->
+    <div v-if="showLeaderboard" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" @click.self="showLeaderboard = false">
+      <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-start justify-between mb-1">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">Leaderboard — {{ lbEvent?.name }}</h3>
+            <p class="text-xs text-gray-400">Kode {{ lbEvent?.code }} · {{ lbEvent?.registered_count }} peserta<span v-if="lbEvent?.reward_quota"> · reward untuk rank ≤ {{ lbEvent?.reward_quota }}</span></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="btn-secondary text-xs" :disabled="exporting" @click="exportCsv">{{ exporting ? '…' : 'Export CSV' }}</button>
+            <button class="text-gray-400 hover:text-gray-600" @click="showLeaderboard = false">✕</button>
+          </div>
+        </div>
+        <div v-if="lbLoading" class="py-8 text-center text-gray-400 text-sm">Memuat…</div>
+        <div v-else-if="!leaderboard.length" class="py-8 text-center text-gray-400 text-sm">Belum ada pendaftar.</div>
+        <table v-else class="w-full text-sm mt-3">
+          <thead class="text-gray-400"><tr>
+            <th class="text-left font-medium py-2 w-10">#</th>
+            <th class="text-left font-medium py-2">Nasabah</th>
+            <th class="text-left font-medium py-2">Status</th>
+            <th class="text-left font-medium py-2">Waktu Daftar</th>
+          </tr></thead>
+          <tbody>
+            <tr v-for="r in leaderboard" :key="r.rank" class="border-t border-gray-50">
+              <td class="py-2 font-bold" :class="r.is_reward_eligible ? 'text-accent' : 'text-gray-400'">{{ r.rank }}</td>
+              <td class="py-2">
+                <p class="font-semibold text-gray-800">{{ r.name }} <span v-if="r.is_reward_eligible">🎁</span></p>
+                <p class="text-xs text-gray-400">{{ r.phone || r.email }}</p>
+              </td>
+              <td class="py-2 text-xs">
+                <span class="px-1.5 py-0.5 rounded-full" :class="r.kyc_status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'">{{ r.kyc_status }}</span>
+              </td>
+              <td class="py-2 text-xs text-gray-500">{{ r.registered_at }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Create panel -->
@@ -183,6 +223,41 @@ async function remove(e: any) {
     await $fetch(`${config.public.apiBase}/events/${e.id}`, { method: 'DELETE', headers: headers.value })
     events.value = events.value.filter((x) => x.id !== e.id)
   } catch { /* ignore */ }
+}
+
+// ---- Leaderboard ----
+const showLeaderboard = ref(false)
+const lbLoading = ref(false)
+const lbEvent = ref<any>(null)
+const leaderboard = ref<any[]>([])
+const exporting = ref(false)
+
+async function openLeaderboard(e: any) {
+  lbEvent.value = e
+  showLeaderboard.value = true
+  lbLoading.value = true
+  leaderboard.value = []
+  try {
+    const data = await $fetch<any>(`${config.public.apiBase}/events/${e.id}/leaderboard`, { headers: headers.value })
+    lbEvent.value = data.event ?? e
+    leaderboard.value = data.leaderboard ?? []
+  } catch { leaderboard.value = [] } finally { lbLoading.value = false }
+}
+
+async function exportCsv() {
+  if (!lbEvent.value) return
+  exporting.value = true
+  try {
+    const blob = await $fetch<Blob>(`${config.public.apiBase}/events/${lbEvent.value.id}/export`, {
+      headers: headers.value, responseType: 'blob',
+    })
+    const url = URL.createObjectURL(blob as Blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `leaderboard-${lbEvent.value.code || lbEvent.value.id}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  } catch { /* ignore */ } finally { exporting.value = false }
 }
 
 function copyLink(code: string) {
