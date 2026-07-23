@@ -290,7 +290,7 @@ async function quickApprove(item: any) {
   if (!confirm(`Approve KYC dari ${item.name}?`)) return
   try {
     await $fetch(`${config.public.apiBase}/kyc/${item.id}/approve`, {
-      method: 'POST',
+      method: 'PUT',
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
     item.status = 'approved'
@@ -307,9 +307,9 @@ async function confirmReject() {
   actionLoading.value = true
   try {
     await $fetch(`${config.public.apiBase}/kyc/${selectedKyc.value.id}/reject`, {
-      method: 'POST',
+      method: 'PUT',
       headers: { Authorization: `Bearer ${authStore.token}` },
-      body: { reason: rejectReason.value }
+      body: { rejected_reason: rejectReason.value }
     })
     selectedKyc.value.status = 'rejected'
     showRejectModal.value = false
@@ -332,7 +332,14 @@ async function fetchKyc() {
 
   try {
     const data = await $fetch<any>(`${config.public.apiBase}/kyc?${params}`, { headers })
-    kycList.value = data.data ?? data
+    const rawList = data.data ?? data
+    // Backend mengembalikan relasi user secara nested (item.user.name/email),
+    // bukan field flat di root — normalisasi di sini agar template selalu aman.
+    kycList.value = (rawList ?? []).map((item: any) => ({
+      ...item,
+      name: item.user?.name ?? item.mother_maiden_name ?? '(Tanpa nama)',
+      email: item.user?.email ?? '-'
+    }))
     if (data.meta || data.total) {
       pagination.value.total = data.meta?.total ?? data.total ?? 0
       pagination.value.totalPages = data.meta?.last_page ?? data.last_page ?? 1

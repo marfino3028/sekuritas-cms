@@ -533,7 +533,7 @@ async function confirmReject() {
   actionLoading.value = true
   try {
     await $fetch(`${config.public.apiBase}/kyc/${route.params.id}/reject`, {
-      method: 'POST',
+      method: 'PUT',
       headers: { Authorization: `Bearer ${authStore.token}` },
       body: { reason: rejectReason.value }
     })
